@@ -9,14 +9,14 @@ var mainState = {
     // That's where we load the game's assets
     // Change the background color of the game
     game.load.image('starfield', 'assets/misc/starfield.jpg');
-    // Load the bird sprite
+    // Load the witch sprite
     game.load.image('witch', 'assets/witch.png');
     //Load the crosses
     game.load.image('cross', 'assets/cross.png');
     //Load in the jump sound
     game.load.audio('squit', 'assets/audio/SoundEffects/squit.wav');
     //Load in the death sound
-    game.load.audio('death', 'assets/audio/SoundEffects/meow2.mp3');
+    game.load.audio('jump', 'assets/audio/SoundEffects/meow2.mp3');
     //Game Sound
     game.load.audio('game', 'assets/audio/oedipus_wizball_highscore.mp3', 'assets/audio/oedipus_wizball_highscore.ogg');
   },
@@ -27,11 +27,11 @@ var mainState = {
     // Here we set up the game, display sprites, etc.
     // Set the physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    // Display the bird on the screen
-    this.bird = this.game.add.sprite(100, 245, 'witch');
-    // Add gravity to the bird to make it fall
-    game.physics.arcade.enable(this.bird);
-    this.bird.body.gravity.y = 1000;  
+    // Display the witch on the screen
+    this.witch = this.game.add.sprite(100, 245, 'witch');
+    // Add gravity to the witch to make it fall
+    game.physics.arcade.enable(this.witch);
+    this.witch.body.gravity.y = 1000;  
     // Call the 'jump' function when the spacekey is hit
     var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     spaceKey.onDown.add(this.jump, this);
@@ -45,9 +45,9 @@ var mainState = {
     this.score = 0;  
     this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
     //set the anchor
-    this.bird.anchor.setTo(-0.2, 0.5);
+    this.witch.anchor.setTo(-0.2, 0.5);
     //Add Sound
-    this.jumpSound = game.add.audio('squit');
+    this.jumpSound = game.add.audio('jump');
     //Add Death Sound
     this.deathSound = game.add.audio('death');
     //Add Game Sound
@@ -58,28 +58,28 @@ var mainState = {
   update: function(){
     // This function is called 60 times per second    
     // It contains the game's logic
-    // If the bird is out of the world (too high or too low), call the 'restartGame' function
-    if(this.bird.inWorld == false)
+    // If the witch is out of the world (too high or too low), call the 'restartGame' function
+    if(this.witch.inWorld == false)
       this.restartGame();
 
-    //game.physics.arcade.overlap(this.bird, this.crosses, this.restartGame, null, this);
+    //game.physics.arcade.overlap(this.witch, this.crosses, this.restartGame, null, this);
 
     //updated code
-    game.physics.arcade.overlap(this.bird, this.crosses, this.hitCross, null, this);
+    game.physics.arcade.overlap(this.witch, this.crosses, this.hitCross, null, this);
 
-    if (this.bird.angle < 20)  
-      this.bird.angle += 1;
+    if (this.witch.angle < 20)  
+      this.witch.angle += 1;
   },
 
-  // Make the bird jump 
+  // Make the witch jump 
   jump: function(){
-    if(this.bird.alive == false)  
+    if(this.witch.alive == false)  
       return;  
-    // Add a vertical velocity to the bird
-    this.bird.body.velocity.y = -350;
+    // Add a vertical velocity to the witch
+    this.witch.body.velocity.y = -350;
 
-    // Create an animation on the bird
-    var animation = game.add.tween(this.bird);
+    // Create an animation on the witch
+    var animation = game.add.tween(this.witch);
 
     // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
     animation.to({angle: -20}, 100);
@@ -88,7 +88,7 @@ var mainState = {
     animation.start();
 
     //This block of code could have been written like this in one line:
-    //game.add.tween(this.bird).to({angle: -20}, 100).start();
+    //game.add.tween(this.witch).to({angle: -20}, 100).start();
 
     this.jumpSound.play();
   },
@@ -129,12 +129,12 @@ var mainState = {
   },
 
   hitCross: function(){  
-    // If the bird has already hit a cross, we have nothing to do
-    if (this.bird.alive == false)
+    // If the witch has already hit a cross, we have nothing to do
+    if (this.witch.alive == false)
       return;
 
-    // Set the alive property of the bird to false
-    this.bird.alive = false;
+    // Set the alive property of the witch to false
+    this.witch.alive = false;
 
     // Prevent new crosses from appearing
     game.time.events.remove(this.timer);
